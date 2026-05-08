@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NeuroKokoro by EduMatrix — AI-powered cognitive brain training for children aged 4–16. Science-backed, gamified, personalised.">
+  <title>NeuroKokoro — Preparing Minds For Life</title>
+  <style>
+    /* === DESIGN SYSTEM === */
+    :root {
+      --navy:       #0A1628;
+      --navy-mid:   #0F1F3D;
+      --blue:       #4F6EF7;
+      --violet:     #9B6DFF;
+      --white:      #FFFFFF;
+      --light-bg:   #F8F9FF;
+      --text-dark:  #1A1A2E;
+      --text-muted: #64748B;
+      --gradient:   linear-gradient(135deg, #4F6EF7, #9B6DFF);
+      --radius:     16px;
+      --radius-sm:  10px;
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-dark);
+      background: var(--white);
+      padding-bottom: 72px; /* space for sticky CTA on mobile */
+    }
+    @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === TYPOGRAPHY === */
+    h1 { font-size: clamp(28px, 7vw, 40px); font-weight: 800; line-height: 1.15; }
+    h2 { font-size: clamp(22px, 5vw, 32px); font-weight: 700; line-height: 1.25; }
+    h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
+    p  { margin-bottom: 0; }
+
+    /* === LAYOUT === */
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 56px 0; }
+    @media (min-width: 768px) { section { padding: 80px 0; } }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-block;
+      border-radius: 50px;
+      padding: 15px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: none;
+      text-align: center;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--gradient);
+      color: var(--white);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 25px rgba(79,110,247,0.4); }
+    .btn-primary-full { width: 100%; display: block; }
+    .btn-inverse {
+      background: var(--white);
+      color: var(--blue);
+    }
+    .btn-inverse:hover { box-shadow: 0 8px 25px rgba(255,255,255,0.3); }
+    .btn-social-fb {
+      background: #1877F2;
+      color: white;
+      width: 100%;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .btn-social-ig {
+      background: linear-gradient(135deg, #833AB4, #E1306C);
+      color: white;
+      width: 100%;
+      display: block;
+    }
+
+    /* === FADE-IN ANIMATION === */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* === NAV BAR === */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 22, 40, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: box-shadow 0.3s ease;
+    }
+    .nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.4); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo {
+      height: 36px;
+      width: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .nav-brand-text { color: var(--white); }
+    .nav-brand-name { font-size: 16px; font-weight: 700; display: block; line-height: 1.2; }
+    .nav-brand-sub  { font-size: 11px; opacity: 0.65; display: block; }
+    .nav-cta {
+      background: var(--gradient);
+      color: white;
+      border-radius: 50px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* === STICKY BOTTOM CTA BAR (mobile only) === */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--gradient);
+      padding: 10px 16px;
+      z-index: 9999;
+    }
+    .sticky-cta a {
+      display: block;
+      text-align: center;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 10px 0;
+    }
+    @media (min-width: 768px) { .sticky-cta { display: none; } }
+
+    /* === PLACEHOLDER for content sections (will be added in Sessions 2-4) === */
+    .coming-soon {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* === HERO === */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 48px 0 0;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
+    }
+    .hero h1 { margin-bottom: 16px; }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .hero-img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: var(--radius) var(--radius) 0 0;
+      margin-top: 32px;
+    }
+    @media (min-width: 768px) { .hero-img { height: 420px; border-radius: var(--radius); } }
+    .stat-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0 32px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 14px;
+      color: white;
+    }
+    .pill-blue   { background: var(--blue); }
+    .pill-violet { background: var(--violet); }
+    .hero-secondary-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* === EMPATHY SECTION === */
+    .empathy {
+      background: var(--navy-mid);
+      color: var(--white);
+    }
+    .empathy-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .empathy h2 { margin-bottom: 24px; }
+    .empathy p  { color: rgba(255,255,255,0.78); font-size: 16px; margin-bottom: 16px; }
+
+    /* === SOLUTION (WHAT IS NK) === */
+    .solution { background: var(--white); }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-header h2 { margin-bottom: 10px; }
+    .section-header p  { color: var(--text-muted); font-size: 15px; max-width: 560px; margin: 0 auto; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .step-card {
+      background: var(--light-bg);
+      border: 1px solid #E8EEFF;
+      border-radius: var(--radius);
+      padding: 28px 22px;
+    }
+    .step-icon { font-size: 32px; margin-bottom: 14px; }
+    .step-card h3 { margin-bottom: 10px; color: var(--text-dark); }
+    .step-card p  { color: var(--text-muted); font-size: 14px; }
+
+    .trust-strip {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+    .trust-strip strong { color: var(--blue); }
+
+    .solution-img {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: var(--radius);
+      object-fit: cover;
+    }
+
+    /* === PILLARS === */
+    .pillars { background: var(--light-bg); }
+
+    .pillars-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .pillars-scroll::-webkit-scrollbar { display: none; }
+
+    @media (min-width: 768px) {
+      .pillars-scroll {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        overflow-x: visible;
+      }
+    }
+
+    .pillar-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      min-width: 200px;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      border: 1px solid #E8EEFF;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(79,110,247,0.12);
+    }
+    @media (min-width: 768px) { .pillar-card { min-width: unset; } }
+
+    .pillar-icon { font-size: 36px; margin-bottom: 12px; }
+    .pillar-name { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+    .pillar-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    .pillars-gif {
+      display: block;
+      max-width: 200px;
+      margin: 32px auto 0;
+    }
+
+    /* === WHY IT WORKS === */
+    .science {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .science .section-header h2 { color: var(--white); }
+    .science .section-header p  { color: rgba(255,255,255,0.65); }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    @media (min-width: 768px) { .proof-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .proof-tile {
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      background: rgba(255,255,255,0.06);
+      border-top: 3px solid;
+    }
+    .proof-tile:nth-child(1) { border-color: var(--blue); }
+    .proof-tile:nth-child(2) { border-color: var(--violet); }
+    .proof-tile:nth-child(3) { border-color: #34D399; }
+
+    .proof-icon { font-size: 30px; margin-bottom: 14px; }
+    .proof-tile h3 { color: var(--white); margin-bottom: 10px; }
+    .proof-tile p  { color: rgba(255,255,255,0.72); font-size: 14px; }
+
+    .headband-img {
+      display: block;
+      max-width: 260px;
+      margin: 0 auto;
+      border-radius: var(--radius-sm);
+    }
+    .headband-caption {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* === TESTIMONIALS === */
+    .testimonials { background: var(--white); }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 768px) { .video-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .video-wrap { position: relative; }
+    .video-wrap video {
+      width: 100%;
+      border-radius: var(--radius);
+      background: #000;
+      display: block;
+    }
+    .video-caption {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* === GALLERY === */
+    .gallery { background: var(--light-bg); }
+
+    .gallery-strip {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .gallery-strip::-webkit-scrollbar { display: none; }
+
+    @media (min-width: 768px) {
+      .gallery-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        overflow-x: visible;
+      }
+    }
+
+    .gallery-img {
+      width: 75vw;
+      max-width: 320px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .gallery-img:hover { transform: scale(1.03); }
+    @media (min-width: 768px) { .gallery-img { width: 100%; max-width: none; } }
+
+    /* === WHO IS IT FOR === */
+    .for-whom { background: var(--white); }
+
+    .checklist { max-width: 680px; margin: 0 auto 40px; }
+
+    .checklist-item {
+      background: var(--light-bg);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .check-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .check-title { font-weight: 700; font-size: 15px; color: var(--text-dark); margin-bottom: 4px; }
+    .check-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* === EVENTS === */
+    .events {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .events .section-header h2 { color: var(--white); }
+    .events .section-header p  { color: rgba(255,255,255,0.65); }
+
+    .event-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .event-date  { font-size: 14px; color: var(--blue); font-weight: 600; margin-bottom: 8px; }
+    .event-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .event-venue { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 8px; }
+    .event-time  { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+
+    .event-placeholder {
+      border: 2px dashed rgba(255,255,255,0.25);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .event-placeholder .ep-icon { font-size: 36px; margin-bottom: 16px; }
+    .event-placeholder h3 { color: var(--white); margin-bottom: 10px; }
+    .event-placeholder p  { color: rgba(255,255,255,0.6); font-size: 14px; max-width: 400px; margin: 0 auto; }
+
+    .social-btns { max-width: 480px; margin: 0 auto; }
+
+    /* === FINAL CTA === */
+    .final-cta {
+      background: var(--gradient);
+      color: var(--white);
+      text-align: center;
+      padding: 72px 20px;
+    }
+    .final-cta h2 { margin-bottom: 14px; }
+    .final-cta p  { font-size: 17px; color: rgba(255,255,255,0.88); margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .final-cta .trust-line {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 18px;
+    }
+
+    /* === FOOTER === */
+    .footer {
+      background: #060D1A;
+      color: var(--white);
+      padding: 48px 0 32px;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-logo {
+      height: 40px;
+      width: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .footer-brand-text { text-align: left; }
+    .footer-brand-name { font-size: 17px; font-weight: 700; }
+    .footer-brand-sub  { font-size: 12px; opacity: 0.5; }
+    .footer-tagline { font-size: 14px; color: rgba(255,255,255,0.55); font-style: italic; }
+    .footer-socials { display: flex; gap: 16px; }
+    .social-icon-link {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+    .social-icon-link:hover { background: rgba(255,255,255,0.2); }
+    .social-icon-link svg { width: 22px; height: 22px; fill: white; }
+    .footer-contact a {
+      color: var(--blue);
+      font-size: 14px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .footer-copyright { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+    /* === MOBILE POLISH === */
+
+    /* Ensure sections don't overflow on small screens */
+    section { overflow-x: hidden; }
+
+    /* Smooth tap highlighting */
+    a, button { -webkit-tap-highlight-color: transparent; }
+
+    /* Fix nav on very small screens */
+    @media (max-width: 360px) {
+      .nav-brand-name { font-size: 14px; }
+      .nav-cta { padding: 8px 12px; font-size: 12px; }
+    }
+
+    /* Better spacing on desktop */
+    @media (min-width: 768px) {
+      .hero { padding: 64px 0 0; }
+      .hero h1 { max-width: 640px; }
+      .hero-sub { font-size: 18px; }
+      .btn-primary-full { width: auto; padding: 18px 48px; font-size: 17px; }
+
+      .empathy-inner { padding: 0 40px; }
+
+      .steps-grid { gap: 20px; }
+      .step-card { padding: 36px 28px; }
+
+      .pillars-scroll { gap: 16px; }
+
+      .checklist { padding: 0 20px; }
+
+      .final-cta { padding: 96px 20px; }
+      .final-cta h2 { font-size: 38px; }
+
+      .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; flex-wrap: wrap; gap: 24px; }
+    }
+
+    /* === SECTION DIVIDERS (subtle visual separation) === */
+    .solution   { border-top: 1px solid #EEF0FF; }
+    .for-whom   { border-top: 1px solid #EEF0FF; }
+    .gallery    { border-top: 1px solid #EEF0FF; }
+
+    /* === BUTTON ACTIVE STATE (mobile tap feedback) === */
+    .btn:active { transform: scale(0.97); }
+
+    /* === ACCESSIBILITY === */
+    :focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* === ACCESSIBILITY: reduced motion === */
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1; transform: none; transition: none; }
+      .pillar-card, .gallery-img, .social-icon-link { transition: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <img src="assets/images/logo.jpg" alt="EduMatrix logo" class="nav-logo">
+        <div class="nav-brand-text">
+          <span class="nav-brand-name">NeuroKokoro</span>
+          <span class="nav-brand-sub">by EduMatrix</span>
+        </div>
+      </div>
+      <a href="https://hendshake.com/jameschin" target="_blank" class="nav-cta">Book Free Screening</a>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- ═══ SECTION 2: HERO ═══ -->
+    <section class="hero">
+      <div class="container">
+        <p class="hero-eyebrow">NeuroKokoro · by EduMatrix</p>
+        <h1>Is Your Child as Focused as They Could Be?</h1>
+        <p class="hero-sub">AI-powered brain training that builds attention, memory &amp; learning skills — designed for children aged 4–16.</p>
+        <a href="https://hendshake.com/jameschin" target="_blank" class="btn btn-primary btn-primary-full">📅 Book a FREE Brain Screening</a>
+        <a href="#how-it-works" class="hero-secondary-link">↓ See How It Works</a>
+        <img src="assets/images/hero.jpg" alt="Children experiencing NeuroKokoro brain training" class="hero-img" fetchpriority="high">
+      </div>
+      <div class="stat-pills">
+        <span class="stat-pill pill-blue">+7.1% Memory</span>
+        <span class="stat-pill pill-violet">+4.3% Decision-Making</span>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 3: EMPATHY HOOK ═══ -->
+    <section class="empathy">
+      <div class="container">
+        <div class="empathy-inner">
+          <h2 class="fade-in">"Many children aren't difficult — they are simply misunderstood."</h2>
+          <p class="fade-in">In their early years, children often do not yet have the words to explain what they feel inside. What appears as distraction, frustration, silence, or resistance can sometimes be a child silently asking to be understood.</p>
+          <p class="fade-in">Too often, children are compared. Labels are given too quickly. At EduMatrix, we believe every child is uniquely gifted — and every child deserves the opportunity to discover who they were created to become.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 4: WHAT IS NEUROKOKORO? ═══ -->
+    <section class="solution" id="how-it-works">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>What is NeuroKokoro?</h2>
+          <p>A science-backed, AI-powered cognitive development program — built for children, loved by parents.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card fade-in">
+            <div class="step-icon">🔬</div>
+            <h3>1. Cognitive Screening</h3>
+            <p>We assess your child's 5 core brain skills with a personalised evaluation to understand exactly where they are today.</p>
+          </div>
+          <div class="step-card fade-in">
+            <div class="step-icon">🎮</div>
+            <h3>2. Personalised NeuroTraining</h3>
+            <p>Gamified brain exercises powered by AI and EEG neurotechnology — training built precisely for your child's cognitive profile.</p>
+          </div>
+          <div class="step-card fade-in">
+            <div class="step-icon">📊</div>
+            <h3>3. Real-Time Progress</h3>
+            <p>After every session, you receive a data-driven report showing exactly what improved and what still needs support — progress you can see.</p>
+          </div>
+        </div>
+
+        <p class="trust-strip fade-in">
+          Powered by <strong>Neeuro EEG Technology</strong> &nbsp;·&nbsp;
+          Developed with <strong>A*STAR Singapore</strong> &nbsp;·&nbsp;
+          Backed by <strong>Kokoro Group</strong>
+        </p>
+
+        <img src="assets/images/gamification.jpg" alt="NeuroKokoro gamified brain training" class="solution-img fade-in" loading="lazy">
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 5: THE 5 COGNITIVE PILLARS ═══ -->
+    <section class="pillars">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>The 5 Brain Skills We Train</h2>
+          <p>Every NeuroKokoro program is built around these five core cognitive pillars — the mental skills that shape how your child thinks, learns, and responds every single day.</p>
+        </div>
+
+        <div class="pillars-scroll">
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon">🧠</div>
+            <div class="pillar-name">Attention</div>
+            <p class="pillar-desc">Helps your child stay focused, listen fully, and complete what they start — the foundation of all learning.</p>
+          </div>
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon">📅</div>
+            <div class="pillar-name">Working Memory</div>
+            <p class="pillar-desc">Remembering 3 instructions at once without needing them repeated. The brain skill behind following through.</p>
+          </div>
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon">🤔</div>
+            <div class="pillar-name">Decision-Making</div>
+            <p class="pillar-desc">Pausing to think before acting. Making better choices under pressure — at school and at home.</p>
+          </div>
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon">📐</div>
+            <div class="pillar-name">Spatial Awareness</div>
+            <p class="pillar-desc">Understanding direction, distance and patterns — from packing a school bag to reading, writing and maths.</p>
+          </div>
+
+          <div class="pillar-card fade-in">
+            <div class="pillar-icon">🔄</div>
+            <div class="pillar-name">Cognitive Flexibility</div>
+            <p class="pillar-desc">Adapting calmly when plans change. The most important skill for a fast-changing world.</p>
+          </div>
+
+        </div>
+
+        <img src="assets/images/attention.gif" alt="Attention training animation" class="pillars-gif fade-in" loading="lazy">
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 6: WHY IT WORKS ═══ -->
+    <section class="science">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>Why Parents Trust NeuroKokoro</h2>
+          <p>Science-backed. Results you can measure. Learning that children actually enjoy.</p>
+        </div>
+
+        <div class="proof-grid">
+
+          <div class="proof-tile fade-in">
+            <div class="proof-icon">🔬</div>
+            <h3>Science-Backed</h3>
+            <p>Developed in collaboration with A*STAR (Agency for Science, Technology and Research, Singapore). Supported by research from the National Institute of Health (NIH), confirming cognitive training as a highly effective protective factor.</p>
+          </div>
+
+          <div class="proof-tile fade-in">
+            <div class="proof-icon">📈</div>
+            <h3>Measurable Results</h3>
+            <p>Our program has been shown to boost memory by 7.1% and decision-making skills by 4.3% — progress that parents can actually see in detailed reports after every single session.</p>
+          </div>
+
+          <div class="proof-tile fade-in">
+            <div class="proof-icon">🎮</div>
+            <h3>Made for Kids</h3>
+            <p>Learning through gamified neurogames powered by real EEG brainwave data. It feels like play — but every game is precision-engineered to train a specific brain skill.</p>
+          </div>
+
+        </div>
+
+        <img src="assets/images/about-headband.jpg" alt="Neeuro SenzeBand EEG headband" class="headband-img fade-in" loading="lazy">
+        <p class="headband-caption fade-in">Neeuro SenzeBand — EEG headband used in every NeuroKokoro session</p>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 7: TESTIMONIALS ═══ -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>Hear From Parents Like You</h2>
+          <p>Real parents. Real sessions. Real results.</p>
+        </div>
+
+        <div class="video-grid">
+
+          <div class="video-wrap fade-in">
+            <video controls playsinline preload="none">
+              <source src="assets/videos/testimonial-1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p class="video-caption">Parent — NeuroKokoro Sharing Session, April 2025</p>
+          </div>
+
+          <div class="video-wrap fade-in">
+            <video controls playsinline preload="none">
+              <source src="assets/videos/testimonial-2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p class="video-caption">Parent — NeuroKokoro Sharing Session, April 2025</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 8: GALLERY ═══ -->
+    <section class="gallery">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>See NeuroKokoro in Action</h2>
+          <p>NeuroKokoro Sharing Session · April 2025, Malaysia</p>
+        </div>
+
+        <div class="gallery-strip">
+          <img src="assets/images/session-1.jpg" alt="NeuroKokoro session photo 1" class="gallery-img fade-in" loading="lazy">
+          <img src="assets/images/session-2.jpg" alt="NeuroKokoro session photo 2" class="gallery-img fade-in" loading="lazy">
+          <img src="assets/images/session-3.jpg" alt="NeuroKokoro session photo 3" class="gallery-img fade-in" loading="lazy">
+          <img src="assets/images/session-4.jpg" alt="NeuroKokoro session photo 4" class="gallery-img fade-in" loading="lazy">
+          <img src="assets/images/session-5.jpg" alt="NeuroKokoro session photo 5" class="gallery-img fade-in" loading="lazy">
+          <img src="assets/images/session-6.jpg" alt="NeuroKokoro session photo 6" class="gallery-img fade-in" loading="lazy">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 9: WHO IS IT FOR? ═══ -->
+    <section class="for-whom">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>Is NeuroKokoro Right for Your Child?</h2>
+          <p>If any of these sound familiar, we'd love to help.</p>
+        </div>
+
+        <div class="checklist">
+
+          <div class="checklist-item fade-in">
+            <span class="check-icon">✅</span>
+            <div>
+              <div class="check-title">Children aged 4–16</div>
+              <p class="check-desc">At any stage of development, cognitive training builds on itself and compounds over time.</p>
+            </div>
+          </div>
+
+          <div class="checklist-item fade-in">
+            <span class="check-icon">✅</span>
+            <div>
+              <div class="check-title">Children with focus, attention or memory challenges</div>
+              <p class="check-desc">When what looks like behaviour on the outside is actually brain processing on the inside.</p>
+            </div>
+          </div>
+
+          <div class="checklist-item fade-in">
+            <span class="check-icon">✅</span>
+            <div>
+              <div class="check-title">Gifted learners seeking higher stimulation</div>
+              <p class="check-desc">Cognitive training that challenges and grows with your child's actual ability level.</p>
+            </div>
+          </div>
+
+          <div class="checklist-item fade-in">
+            <span class="check-icon">✅</span>
+            <div>
+              <div class="check-title">Any child who wants to reach their full potential</div>
+              <p class="check-desc">Because every child deserves the tools to discover who they were created to become.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="text-align:center;">
+          <a href="https://hendshake.com/jameschin" target="_blank" class="btn btn-primary">📅 Find Out Your Child's Cognitive Profile</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 10: UPCOMING EVENTS ═══ -->
+    <section class="events" id="events">
+      <div class="container">
+
+        <div class="section-header fade-in">
+          <h2>Join Us at Our Next Event</h2>
+          <p>We run regular sharing sessions, roadshows and parent workshops across Malaysia.</p>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             TO ADD AN EVENT: Copy the .event-card block below, paste it
+             ABOVE the .event-placeholder div, and fill in the details.
+             ═══════════════════════════════════════════════════════════════
+
+        <div class="event-card">
+          <div class="event-date">📅  Saturday, DD Month YYYY</div>
+          <div class="event-title">EVENT NAME HERE</div>
+          <div class="event-venue">📍 Venue Name, City, Malaysia</div>
+          <div class="event-time">🕐 00:00am – 00:00pm</div>
+          <a href="REGISTRATION_LINK_HERE" class="btn btn-primary" target="_blank" style="margin-top:8px;">Register Now →</a>
+        </div>
+
+        ═══════════════════════════════════════════════════════════════ -->
+
+        <div class="event-placeholder fade-in">
+          <div class="ep-icon">📅</div>
+          <h3>Upcoming Events</h3>
+          <p>Our next session is being confirmed. Follow us on Facebook and Instagram to be the first to know when registration opens!</p>
+        </div>
+
+        <div class="social-btns fade-in">
+          <a href="https://www.facebook.com/edumatrixasia" target="_blank" rel="noopener" class="btn btn-social-fb">
+            📘&nbsp; Follow Us on Facebook
+          </a>
+          <a href="https://www.instagram.com/edumatrixasia/" target="_blank" rel="noopener" class="btn btn-social-ig">
+            📸&nbsp; Follow Us on Instagram
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECTION 11: FINAL CTA ═══ -->
+    <section class="final-cta">
+      <div class="container">
+        <h2 class="fade-in">Ready to Discover How Your Child's Brain Is Wired?</h2>
+        <p class="fade-in">Book a FREE Cognitive Screening today. No commitment. Just clarity about your child.</p>
+        <a href="https://hendshake.com/jameschin" target="_blank" class="btn btn-inverse fade-in" style="font-size:17px; padding:18px 40px;">
+          📅 Book a FREE Brain Screening
+        </a>
+        <p class="trust-line fade-in">AI-Powered &nbsp;·&nbsp; EEG Neurotechnology &nbsp;·&nbsp; Developed with A*STAR Singapore &nbsp;·&nbsp; Science-Backed</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ SECTION 12: FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          <img src="assets/images/logo.jpg" alt="EduMatrix logo" class="footer-logo" loading="lazy">
+          <div class="footer-brand-text">
+            <div class="footer-brand-name">NeuroKokoro</div>
+            <div class="footer-brand-sub">by EduMatrix</div>
+          </div>
+        </div>
+
+        <p class="footer-tagline">"Preparing Minds For Life"</p>
+
+        <div class="footer-socials">
+          <!-- Facebook icon -->
+          <a href="https://www.facebook.com/edumatrixasia" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <!-- Instagram icon -->
+          <a href="https://www.instagram.com/edumatrixasia/" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="footer-contact">
+          <a href="https://hendshake.com/jameschin" target="_blank">Connect with us →</a>
+        </div>
+
+        <p class="footer-copyright">© 2025 EduMatrix · NeuroKokoro. All rights reserved.</p>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- STICKY BOTTOM CTA — mobile only -->
+  <div class="sticky-cta">
+    <a href="https://hendshake.com/jameschin" target="_blank">📅 Book FREE Brain Screening</a>
+  </div>
+
+  <script>
+    // Nav shadow on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll fade-in (IntersectionObserver)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
