@@ -301,11 +301,15 @@
       background: var(--white);
       border-radius: var(--radius);
       padding: 24px 18px;
-      min-width: 200px;
-      scroll-snap-align: start;
+      width: calc(100vw - 56px);
+      max-width: calc(100vw - 56px);
+      box-sizing: border-box;
+      scroll-snap-align: center;
       flex-shrink: 0;
       border: 1px solid #E8EEFF;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
     .pillar-card:hover {
       transform: translateY(-4px);
@@ -549,6 +553,7 @@
 
     /* Ensure sections don't overflow on small screens */
     section { overflow-x: hidden; }
+    .pillars { overflow-x: visible; }
 
     /* Smooth tap highlighting */
     a, button { -webkit-tap-highlight-color: transparent; }
@@ -629,6 +634,7 @@
         <p class="hero-sub">AI-powered brain training that builds attention, memory &amp; learning skills — designed for children aged 4–16.</p>
         <a href="https://hendshake.com/jameschin" target="_blank" class="btn btn-primary btn-primary-full">📅 Book a FREE Brain Screening</a>
         <a href="#how-it-works" class="hero-secondary-link">↓ See How It Works</a>
+        <a href="#testimonials" class="hero-secondary-link">↓ What Other Parents Say</a>
         <img src="assets/images/hero.jpg" alt="Children experiencing NeuroKokoro brain training" class="hero-img" fetchpriority="high">
       </div>
       <div class="stat-pills">
@@ -729,7 +735,6 @@
 
         </div>
 
-        <img src="assets/images/attention.gif" alt="Attention training animation" class="pillars-gif fade-in" loading="lazy">
 
       </div>
     </section>
